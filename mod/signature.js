@@ -1,3 +1,11 @@
+/**
+ * Signature.js
+ * @Description: OAuth Signature 
+ * @Author: Sandy
+ * @Date: 11.01.30
+ * @Email: wojiaoabin@gmail.com
+ */
+
 var OAuth = require('../lib/oauth.js').OAuth,
 	METHOD = 'POST',
 	APP_KEY = 'e8a5d6aca8b04abf9b7d72e96a14133f',
