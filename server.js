@@ -16,7 +16,7 @@ var util = require('util'),
 	CONFIG = {
 		'debug': true,
 		'port': 8080,
-		'host': "127.0.0.1",
+		'host': '127.0.0.1',
 		'timeout': 5000,
 		'threshold': 8000,
 		'responseCode': {
@@ -158,7 +158,7 @@ function createHttpServer(port, host) {
 		requestHandler(req, res, prepareSync);
 	}).listen(port, host);
 
-	console.log('SyncTwitter Server running at ' + port );
+	console.log('Sync Server running at http://' + host + ':' + port + '/');
 }
 
 function requestHandler(request, response, callback) {
