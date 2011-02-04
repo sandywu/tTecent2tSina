@@ -16,6 +16,7 @@ var util = require('util'),
 	CONFIG = {
 		'debug': true,
 		'port': 8080,
+		'host': "127.0.0.1",
 		'timeout': 5000,
 		'threshold': 8000,
 		'responseCode': {
@@ -58,7 +59,7 @@ function getCredential() {
 function initialize() {
 	var credit = getCredential();
 	sign = require('./mod/signature.js').generateSigner(credit.accessToken, credit.tokenSecret);
-	createHttpServer(CONFIG.port);
+	createHttpServer(CONFIG.port, CONFIG.host);
 }
 
 function createClient(response, msg) {
@@ -150,12 +151,12 @@ function onClientComplete() {
 	routine = true;
 }
 
-function createHttpServer(port) {
+function createHttpServer(port, host) {
 
 	http.createServer(function (req, res) {
 		res.writeHead(200, {'Content-Type': 'text/plain'});
 		requestHandler(req, res, prepareSync);
-	}).listen(port, "16.8.124.221");
+	}).listen(port, host);
 
 	console.log('SyncTwitter Server running at ' + port );
 }
