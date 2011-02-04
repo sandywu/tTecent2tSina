@@ -1,4 +1,12 @@
-var	util = require('util'),
+/**
+ * Server.js - Main Logic
+ * @Description: Sycn WeiBo 
+ * @Author: Sandy
+ * @Date: 11.01.30
+ * @Email: wojiaoabin@gmail.com
+ */
+
+var util = require('util'),
 	exec = require('child_process').exec,
 	queryString = require('querystring'),
 	http = require('http'),
