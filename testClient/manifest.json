@@ -1,7 +1,7 @@
 {
-  "name": "client",
+  "name": "testClient",
   "version": "0.1",
-  "description": "Sycn WeiBo Test Client",
+  "description": "Sync WeiBo Test Client",
   "browser_action": {
     "default_icon": "ico.png",
     "popup": "client.html"
