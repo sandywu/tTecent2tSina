@@ -1,0 +1,13 @@
+{
+  "name": "client",
+  "version": "0.1",
+  "description": "Sycn WeiBo Test Client",
+  "browser_action": {
+    "default_icon": "ico.png",
+    "popup": "client.html"
+  },
+  "permissions": [
+    "notifications",
+    "http://your-remote-host:port/"
+  ]
+}

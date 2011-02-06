@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>TestClient</title>
+<style type="text/css">
+
+body {
+	font-family:'Microsoft Yahei','Verdana','Arial','Tahoma';
+}
+
+#wrapper:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+#message {
+	display:block;
+	min-width:280px;
+	max-width:500px;
+	min-height:15px;
+	margin-bottom:5px;
+	padding:8px;
+	outline:none;
+	border-color:gray;
+	color:#333;
+	font-size:.9em;
+	white-space:pre-wrap;
+	word-wrap:break-word;
+	resize:auto;
+	-webkit-border-radius:5px;
+}
+
+#message:focus {
+	border-color:#0bb;
+	-webkit-box-shadow:0px 0px 10px darkGray;
+}
+
+#submit {
+	float:left;
+	outline:none;
+	cursor:pointer;
+	text-align:center;
+	text-decoration:none;
+	font-size:15px;
+	font-weight:bold;
+	padding:.5em 2em .55em;
+	text-shadow:0 1px 1px rgba(0,0,0, .3);
+	color: #fef4e9;
+	border: 1px solid #da7c0c;
+	background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+	-webkit-border-radius: .5em;
+	-webkit-box-shadow:0px 1px 2px rgba(0,0,0, .2);
+}
+
+#submit:hover {
+	background: #f47c20;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f88e11), to(#f06015));
+}
+
+#submit:active {
+	color: #fcd3a5;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
+}
+
+#noticer {
+	float:right;
+	margin:auto auto auto 10%;
+	width:50%;
+	height:35px;
+	line-height:37px;
+	font-size:14px;
+	text-align:center;
+}
+
+/* log */
+
+.warn {
+	color:#c00;
+}
+
+.info {
+	color:#333;
+}
+
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+	<textarea id="message"></textarea>
+	<input id="submit" type="button" value="Send"/>
+	<div id="noticer"></div>
+</div>
+
+<script type="text/javascript">
+
+var doc = window.document,
+	xhr = new XMLHttpRequest,
+	delay = 5000,
+	method = 'POST',
+	remote = 'your-remote-host:port',
+	isAsync = true,
+	btn_ID = 'submit',
+	text_ID = 'message',
+	ntc_ID = 'noticer',
+	evtType = 'click',
+	purgeTimer = null,
+	purgeInterval = 2600,
+	States = {
+		'100': 'success',
+		'200': 'fail',
+		'300': 'timeout',
+		'400': 'overload'
+	},
+	Handlers = {
+		'success': function __success__() {
+			var notification = getNotification();
+			notification.show();
+			setTimeout(function() {	notification.cancel() }, delay);
+			log('Request SuccessFul!', 'info');
+			nodeText.value = '';
+		},
+		'fail': function __error__() {
+			log('Request Failed!', 'warn');
+		},
+		'overload': function __overload__() {
+			log('Too Frequent!', 'warn');
+		},
+
+		'timeout': function __timeout__() {
+			log('Request TimeOut!', 'warn');
+		}
+	};
+
+function sendMsg() {
+	var msg = nodeText.value.trim();
+	requestRemote(msg);
+}
+
+function requestRemote(msg) {
+	xhr.open(method, remote, isAsync);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.onload = function() { responseHandler(xhr); }
+	xhr.send('msg=' + encodeURIComponent(msg));
+	onProcessing();
+}
+
+function responseHandler(xhr) {
+	var state = States[parseInt(xhr.responseText)], handlerResult = Handlers[state]();
+}
+
+function onProcessing() {
+	log('Processing.....', 'info', true);
+}
+
+function purge() {
+	clearTimeout(purgeTimer);
+	purgeTimer = setTimeout(function() { nodeNtc.innerHTML = '';}, purgeInterval);
+}
+
+function log(text, level, isNotPurge) {
+	nodeNtc.className = level || 'info';
+	nodeNtc.innerHTML = text;
+	if (!isNotPurge) { purge(); }
+}
+
+function $(elem) {
+	return typeof elem == 'string' ? doc.getElementById(elem): elem;
+}
+
+function getNotification() {
+	return window.webkitNotifications.createNotification('ico.png', 'TestClient', 'Sync SuccessFul');
+}
+
+;(function init() {
+	nodeBtn = $(btn_ID);
+	nodeText = $(text_ID);
+	nodeNtc = $(ntc_ID);
+	nodeBtn.addEventListener(evtType, sendMsg, false);
+})();
+
+</script>
+</body>
+</html>
