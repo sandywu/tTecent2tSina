@@ -125,9 +125,11 @@ var doc = window.document,
 			log('Request SuccessFul!', 'info');
 			nodeText.value = '';
 		},
+
 		'fail': function __error__() {
 			log('Request Failed!', 'warn');
 		},
+
 		'overload': function __overload__() {
 			log('Too Frequent!', 'warn');
 		},
