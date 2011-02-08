@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Server.js - Main Logic
  * @Description: Sycn WeiBo 
