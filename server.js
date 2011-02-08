@@ -46,6 +46,7 @@ function getCredential() {
 
 	if (!accessKey.token || !accessKey.secret) {
 		throw new Error('getAccessKey(): Missing Token or Secret!');
+		process.exit(1);
 	}
 
 	return {
